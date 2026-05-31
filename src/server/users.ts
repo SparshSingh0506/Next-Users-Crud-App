@@ -4,7 +4,7 @@ import { db } from '@/db/index';
 import { users, type NewUser } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
-export async function getUsers() {
+export async function getAllUsers() {
   try {
     return await db.select().from(users); // SELECT * FROM users
     // await is also optional, as drizzle functions return promises itself
@@ -12,7 +12,7 @@ export async function getUsers() {
 
   catch (error) {
     console.error(error);
-    return { error: "Failed to get Users." };
+    throw { error: "Failed to get Users." };
   }
 }
 
@@ -23,7 +23,7 @@ export async function createUser(newUser: NewUser) {
 
   catch (error) {
     console.error(error);
-    return { error: "Failed to create user." };
+    throw { error: "Failed to create user." };
   }
 }
 
@@ -34,7 +34,7 @@ export async function updateUser(id: string, user: NewUser) {
 
   catch (error) {
     console.error(error);
-    return { error: "Failed to update user." };
+    throw { error: "Failed to update user." };
   }
 }
 
@@ -45,7 +45,7 @@ export async function deleteUser(id: string) {
 
   catch (error) {
     console.error(error);
-    return { error: "Failed to delete user." };
+    throw { error: "Failed to delete user." };
   }
 }
 
