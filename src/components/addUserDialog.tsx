@@ -21,58 +21,93 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
 
+import { useState } from "react";
+
+import { createUser } from "@/server/users";
+import { toast } from "sonner";
+
+const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => { // onSubmit automatically passes form event data on submit
+  e.preventDefault();
+
+  const details = new FormData(e.currentTarget);
+
+  try {
+    await createUser({
+      username: details.get("username") as string,
+      email: details.get("email") as string,
+      password: details.get("password") as string,
+    });
+
+    console.log("User created");
+
+    toast.success("User Added Successfully.");
+  }
+
+  catch (error) {
+    alert("Failed to create user!")
+  }
+}
 export default function AddUserDialog() {
   return (
-    <Dialog>
+    <div>
+      <Dialog>
 
-      <div className="flex justify-end">
-        <DialogTrigger asChild>
-          <Button>Create User <UserPlus /></Button>
-        </DialogTrigger>
-      </div>
+        <div className="flex justify-end">
+          <DialogTrigger asChild>
+            <Button>Create User <UserPlus /></Button>
+          </DialogTrigger>
+        </div>
 
-      <DialogContent className="sm:max-w-sm">
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          console.log("User Added!");
-        }} autoComplete="off">
+        <DialogContent className="sm:max-w-sm">
+          <form onSubmit={handleSubmit} autoComplete="off">
 
-          <DialogHeader>
+            <DialogHeader>
 
-            <DialogTitle>Add User</DialogTitle>
+              <DialogTitle>Add User</DialogTitle>
 
-            <DialogDescription>
-              Enter Username and email to add to the database.
-            </DialogDescription>
+              <DialogDescription>
+                Enter Username and email to add to the database.
+              </DialogDescription>
 
-          </DialogHeader>
+            </DialogHeader>
 
-          <br />
-          
-          <FieldGroup>
+            <br />
 
-            <Field>
-              <Label htmlFor="username-1">Username</Label>
-              <Input id="username-1" name="username" placeholder="Enter Username" />
-            </Field>
+            <FieldGroup>
 
-            <Field>
-              <Label htmlFor="email-1">Email</Label>
-              <Input id="email-1" name="email" placeholder="Enter Email" />
-            </Field>
+              <Field>
+                <Label htmlFor="username-1">Username</Label>
+                <Input id="username-1" name="username" placeholder="Enter Username" required />
+              </Field>
 
-          </FieldGroup>
+              <Field>
+                <Label htmlFor="email-1">Email</Label>
+                <Input id="email-1" name="email" placeholder="Enter Email" required />
+              </Field>
 
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit">Confirm</Button>
-          </DialogFooter>
+              <Field>
+                <Label htmlFor="password-1">Password</Label>
+                <Input id="password-1" name="password" type="password" placeholder="Enter Password" required />
+              </Field>
 
-        </form>
-      </DialogContent>
+            </FieldGroup>
 
-    </Dialog>
+            <br />
+
+            <DialogFooter>
+
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+
+              <Button type="submit">Confirm</Button>
+
+            </DialogFooter>
+
+          </form>
+        </DialogContent>
+
+      </Dialog>
+    </div>
   )
 }

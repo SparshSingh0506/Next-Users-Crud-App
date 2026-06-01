@@ -12,40 +12,40 @@ export async function getAllUsers() {
 
   catch (error) {
     console.error(error);
-    throw { error: "Failed to get Users." };
+    throw new Error("Failed to get Users." );
   }
 }
 
 export async function createUser(newUser: NewUser) {
   try {
-    return await db.insert(users).values(newUser); // INSERT INTO users({a, b}) VALUE ({newUser})
+    await db.insert(users).values(newUser); // INSERT INTO users({a, b}) VALUE ({newUser})
   }
 
   catch (error) {
     console.error(error);
-    throw { error: "Failed to create user." };
+    throw new Error("Failed to create User");
   }
 }
 
 export async function updateUser(id: string, user: NewUser) {
   try {
-    return await db.update(users).set(user).where(eq(users.id, id)); // INSERT INTO users({a, b}) VALUE ({user})
+    await db.update(users).set(user).where(eq(users.id, id)); // INSERT INTO users({a, b}) VALUE ({user})
   }
 
   catch (error) {
     console.error(error);
-    throw { error: "Failed to update user." };
+    throw new Error("Failed to update user.");
   }
 }
 
 export async function deleteUser(id: string) {
   try {
-    return await db.delete(users).where(eq(users.id, id));
+    await db.delete(users).where(eq(users.id, id));
   }
 
   catch (error) {
     console.error(error);
-    throw { error: "Failed to delete user." };
+    throw new Error("Failed to delete user." );
   }
 }
 

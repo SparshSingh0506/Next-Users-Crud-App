@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner"
+
 const inter = Inter({ 
   subsets: ['latin'],
   display: 'swap', // ensures the text remains visible during load
@@ -19,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster />
+        </body>
     </html>
   );
 }
