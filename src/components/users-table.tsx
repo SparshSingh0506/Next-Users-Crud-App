@@ -7,9 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
 import { getAllUsers } from "@/server/users";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Button } from "./ui/button";
+import { PencilIcon } from "lucide-react";
+import { DeleteUserDialog } from "./delete-user-button";
 
 export default async function UsersTable() {
   const users = await getAllUsers();
@@ -34,7 +36,7 @@ export default async function UsersTable() {
             <TableCell className="justify-items-end">
               <div className="flex gap-2">
                 <Button variant="ghost"><PencilIcon size={4} /></Button>
-                <Button variant="destructive"><Trash2Icon size={4} /></Button>
+                <DeleteUserDialog userId={user.id}/>
               </div>
             </TableCell>
           </TableRow>

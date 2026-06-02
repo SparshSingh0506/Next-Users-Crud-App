@@ -27,7 +27,7 @@ import { createUser } from "@/server/users";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export default function AddUserDialog() {
+export default function AddUserButton() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 

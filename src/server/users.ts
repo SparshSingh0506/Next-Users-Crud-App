@@ -23,7 +23,7 @@ export async function createUser(newUser: NewUser) {
 
   catch (error: any) {
     console.error(error);
-    throw new Error("unique value violation");
+    throw new Error("Failed to create user.");
   }
 }
 
@@ -45,7 +45,7 @@ export async function deleteUser(id: string) {
 
   catch (error) {
     console.error(error);
-    throw new Error("Failed to delete user." );
+    throw new Error("Failed to delete user.");
   }
 }
 
