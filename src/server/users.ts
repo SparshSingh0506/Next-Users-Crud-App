@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm';
 export async function getAllUsers() {
   try {
     return await db.select().from(users); // SELECT * FROM users
-    // await is also optional, as drizzle functions return promises itself
+    // await is also optional, as drizzle functions return promises themselves
   }
 
   catch (error) {
@@ -21,9 +21,9 @@ export async function createUser(newUser: NewUser) {
     await db.insert(users).values(newUser); // INSERT INTO users({a, b}) VALUE ({newUser})
   }
 
-  catch (error) {
+  catch (error: any) {
     console.error(error);
-    throw new Error("Failed to create User");
+    throw new Error("unique value violation");
   }
 }
 

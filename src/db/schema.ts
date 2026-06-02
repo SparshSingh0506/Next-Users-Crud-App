@@ -11,6 +11,7 @@ export const users = pgTable("users", {
 
 //export type User = typeof users.$inferSelect; // all values are required
 export type NewUser = typeof users.$inferInsert; // makes default values like defaultRandom(), defaultNow() etc optional.
+
 /*
   this drizzle feature automatically creates ts type as
   type User = {
