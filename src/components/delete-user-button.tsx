@@ -1,18 +1,35 @@
 "use client";
 
-import { Trash2Icon } from "lucide-react";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter, DialogClose } from "./ui/dialog";
-import { deleteUser } from "@/server/users";
-import { toast } from "sonner";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export const DeleteUserDialog = ({userId}: {userId: string}) => {
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import { Button } from "./ui/button";
+import { Loader, Trash2Icon } from "lucide-react";
+import { deleteUser } from "@/server/users";
+import { toast } from "sonner";
+
+export const DeleteUserDialog = ({ userId }: { userId: string }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  
   const router = useRouter();
 
-  const handleDelete = () => { // clear why async await does not matter here
-    try{
-      deleteUser(userId);
+  const handleDelete = async () => {
+    try {
+      setIsLoading(true);
+
+      await deleteUser(userId);
 
       console.log("User deleted");
 
@@ -20,13 +37,18 @@ export const DeleteUserDialog = ({userId}: {userId: string}) => {
 
       router.refresh();
     }
+
     catch (error: any) {
       toast.error("Failed to delete User.");
+    }
+
+    finally {
+      setIsLoading(false);
     }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
 
       <DialogTrigger asChild>
         <Button variant="destructive"><Trash2Icon size={4} /></Button>
@@ -49,9 +71,16 @@ export const DeleteUserDialog = ({userId}: {userId: string}) => {
             <Button variant="outline">Cancel</Button>
           </DialogClose>
 
-          <Button variant="destructive" onClick={handleDelete}>Confirm</Button>
+          <Button variant="destructive" onClick={handleDelete}>
+            {isLoading ?
+              <Loader className="size-4 animate-spin" />
+              :
+              "Confirm"
+            }
+          </Button>
 
         </DialogFooter>
+        
       </DialogContent>
 
     </Dialog>

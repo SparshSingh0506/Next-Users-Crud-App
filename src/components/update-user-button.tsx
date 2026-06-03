@@ -22,15 +22,16 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader, UserPlus } from "lucide-react";
+import { Loader, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import { createUser } from "@/server/users";
+import { updateUser } from "@/server/users";
+import type { NewUser } from "@/db/schema";
 
-export default function AddUserButton() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function UpdateUserButton({ currentDetails }: { currentDetails: Pick<NewUser, 'id' | 'username' | 'email'>}) {
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => { // onSubmit automatically passes form event data on submit
@@ -41,7 +42,7 @@ export default function AddUserButton() {
     try {
       setIsLoading(true);
 
-      await createUser({
+      await updateUser(currentDetails.id as string, {
         username: details.get("username") as string,
         email: details.get("email") as string,
         password: details.get("password") as string,
@@ -49,9 +50,9 @@ export default function AddUserButton() {
 
       console.log("User created");
 
-      toast.success("User Added Successfully.");
+      toast.success("User Updated Successfully.");
 
-      setIsOpen(false);
+      setOpen(false);
 
       router.refresh();
     }
@@ -66,11 +67,11 @@ export default function AddUserButton() {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
 
       <div className="flex justify-end">
         <DialogTrigger asChild>
-          <Button>Add User <UserPlus /></Button>
+          <Button variant="ghost"><PencilIcon size={4} /></Button>
         </DialogTrigger>
       </div>
 
@@ -79,10 +80,10 @@ export default function AddUserButton() {
 
           <DialogHeader>
 
-            <DialogTitle>Add User</DialogTitle>
+            <DialogTitle>Update User</DialogTitle>
 
             <DialogDescription>
-              Enter Username, Email and Password to add to the database.
+              Enter new Username, Email and Password to update the database.
             </DialogDescription>
 
           </DialogHeader>
@@ -93,17 +94,17 @@ export default function AddUserButton() {
 
             <Field>
               <Label htmlFor="username-1">Username</Label>
-              <Input id="username-1" name="username" placeholder="Enter Username" required />
+              <Input id="username-1" name="username" placeholder="Enter Username" defaultValue={currentDetails.username} />
             </Field>
 
             <Field>
               <Label htmlFor="email-1">Email</Label>
-              <Input id="email-1" name="email" placeholder="Enter Email" required />
+              <Input id="email-1" name="email" placeholder="Enter Email" defaultValue={currentDetails.email} />
             </Field>
 
             <Field>
               <Label htmlFor="password-1">Password</Label>
-              <Input id="password-1" name="password" type="password" placeholder="Enter Password" required />
+              <Input id="password-1" name="password" type="password" placeholder="Enter Password" />
             </Field>
 
           </FieldGroup>
@@ -130,5 +131,5 @@ export default function AddUserButton() {
       </DialogContent>
 
     </Dialog>
-  )
+  );
 }

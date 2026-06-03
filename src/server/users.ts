@@ -27,7 +27,9 @@ export async function createUser(newUser: NewUser) {
   }
 }
 
-export async function updateUser(id: string, user: NewUser) {
+export async function updateUser(id: string, user: Omit<NewUser, 'createdAt'>) {
+  user.updatedAt = new Date(); // by default this initializes to current time.
+  
   try {
     await db.update(users).set(user).where(eq(users.id, id)); // INSERT INTO users({a, b}) VALUE ({user})
   }

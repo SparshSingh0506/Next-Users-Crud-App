@@ -9,15 +9,17 @@ import {
 } from "@/components/ui/table"
 
 import { getAllUsers } from "@/server/users";
-import { Button } from "./ui/button";
-import { PencilIcon } from "lucide-react";
+
 import { DeleteUserDialog } from "./delete-user-button";
+import UpdateUserButton from "./update-user-button";
 
 export default async function UsersTable() {
   const users = await getAllUsers();
   return (
     <Table className="w-full table-fixed">
+
       <TableCaption>List of all the users</TableCaption>
+
       <TableHeader>
         <TableRow>
           <TableHead className="font-bold">Username</TableHead>
@@ -26,7 +28,9 @@ export default async function UsersTable() {
           <TableHead className="font-bold">Updated At</TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
+        
         {users.map((user, i) => (
           <TableRow key={i}>
             <TableCell>{user.username}</TableCell>
@@ -35,13 +39,15 @@ export default async function UsersTable() {
             <TableCell>{user.updatedAt?.toLocaleString()}</TableCell>
             <TableCell className="justify-items-end">
               <div className="flex gap-2">
-                <Button variant="ghost"><PencilIcon size={4} /></Button>
-                <DeleteUserDialog userId={user.id}/>
+                <UpdateUserButton currentDetails={user} />
+                <DeleteUserDialog userId={user.id} />
               </div>
             </TableCell>
           </TableRow>
         ))}
+
       </TableBody>
+
     </Table>
   )
 }

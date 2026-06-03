@@ -14,12 +14,14 @@ export type NewUser = typeof users.$inferInsert; // makes default values like de
 
 /*
   this drizzle feature automatically creates ts type as
-  type User = {
-    id: string;
+  type NewUser = {
     email: string;
     username: string;
-    ...
-  };
+    password: string;
+    id: string | undefined;
+    createdAt: Date | null | undefined;
+    updatedAt: Date | null | undefined;
+  }
 */
 
 /*
